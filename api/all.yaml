@@ -345,6 +345,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListTablesResponse'
+    /tables/summary:
+    get:
+      tags:
+        - Tables
+      summary: Get summary of available tables
+      description: |
+        Returns a summary of tables filtered by catalog and/or schema.
+      operationId: getTableSummary
+      parameters:
+        - name: catalog_name
+          in: query
+          description: Name of the parent catalog to filter by.
+          required: false
+          schema:
+            type: string
+        - name: schema_name
+          in: query
+          description: Name of the parent schema to filter by.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A summary of tables was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_tables:
+                    type: integer
+                    description: Total number of tables returned.
+                  tables:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        full_name:
+                          type: string
+                          description: Fully-qualified table name.
+                        columns:
+                          type: integer
+                          description: Number of columns in the table.
+                        comment:
+                          type: string
+                          description: Optional comment or description of the table.
   /tables/{full_name}:
     parameters:
       - name: full_name
